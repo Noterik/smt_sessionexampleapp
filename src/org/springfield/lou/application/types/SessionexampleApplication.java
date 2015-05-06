@@ -1,5 +1,7 @@
 /* 
-* SessionApplication.java
+* SessionexampleApplication.java
+* 
+* App that shows how a developer can use session properties. 
 * 
 * Copyright (c) 2015 Noterik B.V.
 * 
@@ -28,25 +30,35 @@ public class SessionexampleApplication extends Html5Application{
 	public SessionexampleApplication(String id) {
 		super(id); 
 		
+		//Enable session property recovery.
 		this.setSessionRecovery(true);
+		
+		//Add the "query" variable to the recovery list.
 		this.addToRecoveryList("query");
 	}
 	
 	public void onNewScreen(Screen s){
-		System.out.println("SessionexampleApplication.onNewScreen()");
-		
+		//Load the content of /WebContent/eddie/apps/sessionexample/components on the screen. 
 		this.loadContent(s, "queryinput", "queryinput");
+		
+		//Attaches a handler (actionQueryformchange) to the change event on the query field inside queryinput.
 		s.setDiv("query", "bind:change", "actionQueryformchange", this);
+		
+		//If at an earlier time, the query variable was already set, this should now be recovered and available on the screen object. 
 		if(s.getProperty("query") != null){
+			//Update the query value on the screen.
 			updateQueryVal(s);
 		}
 	}
 
+	//Handler that's added on line 45
 	public void actionQueryformchange(Screen s, String c){
 		s.setProperty("query", c);
+		//Update the query value on the screen
 		updateQueryVal(s);
 	}
 	
+	//Updates the query value on the screen
 	private void updateQueryVal(Screen s){
 		s.setContent("queryval", (String) s.getProperty("query"));
 	}
